@@ -1,0 +1,9 @@
+# Folder
+*vs/
+*vscode/
+
+# Files
+*.sln
+*.pdb
+*.obj
+*.ilk
