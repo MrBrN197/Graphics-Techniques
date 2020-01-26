@@ -9,11 +9,6 @@ uniform sampler2D u_normalTexture;
 
 uniform vec2 u_screenSize;
 
-
-float clamp01(float v){
-    return max(0, min(v, 1));
-}
-
 void main(){
 
     vec2 texels = gl_FragCoord.xy / u_screenSize;
@@ -23,15 +18,15 @@ void main(){
 
     float specularIntensity = 0.5;
     float diffuseIntensity = 0.5;
-    float specularPow = 5.0;
+    float specularPow = 32.0;
 
-    vec3 lightDir = normalize(vs_lightPos - vs_pos);
-    vec3 reflectionDir = -lightDir + 2*dot(vs_normal, lightDir)*vs_normal; 
+    vec3 light_dir = normalize(vs_lightPos - vs_pos);
+    vec3 reflection_dir = -light_dir + 2*dot(vs_normal, light_dir)*vs_normal; 
     vec3 view_dir = vec3(0.0, 0.0, 1.0);
 
-    float diffuseContrib = diffuseIntensity * clamp01(dot(vs_normal, lightDir));
-    float specularContrib = specularIntensity * pow(clamp01(dot(view_dir, reflectionDir)), specularPow);
-    vec3 ambient = vec3(0.1, 0.1, 0.1);
+    float diffuseContrib = diffuseIntensity * max(dot(vs_normal, light_dir), 0);
+    float specularContrib = specularIntensity * pow(max(dot(view_dir, reflection_dir), 0), specularPow);
+    vec3 ambient = vec3(0.0, 0.0, 0.0);
     vec3 color = ambient + vec3(diffuseContrib) + vec3(specularContrib);  
     out_color = vec4(color, 1.0);
 }

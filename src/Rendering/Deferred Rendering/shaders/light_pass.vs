@@ -10,7 +10,6 @@ uniform vec3 u_lightPos;
 out vec3 vs_lightPos;
 
 void main(){
-
-    vs_lightPos = normalize((u_view * vec4(u_lightPos, 1.0)).xyz);
-    gl_Position = pos;
+    vs_lightPos = normalize((u_view * u_model * vec4(u_lightPos, 1.0)).xyz);
+    gl_Position = u_projection * u_view * u_model * pos;
 }
